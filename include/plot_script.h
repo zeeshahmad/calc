@@ -8,11 +8,11 @@
 #include <iomanip>
 #include <vector>
 
-#include "calc/gnuplot/gnuplot.h"
-#include "calc/gnuplot/gnuplot_styles.h"
-#include "calc/gnuplot/gnuplot_terms.h"
-#include "calc/util.h"
-#include "calc/complex_double.h"
+#include "gnuplot/gnuplot.h"
+#include "gnuplot/gnuplot_styles.h"
+#include "gnuplot/gnuplot_terms.h"
+#include "calc_util.h"
+#include "complex_double.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ class PlotScript {
     void set_extra() {
       r("set encoding utf8");
       r("set key font 'Ubuntu,22'");
-      string script_name_c = script_name; util::findAndReplaceAll(script_name_c,"_"," ");
+      string script_name_c = script_name; calc_util::findAndReplaceAll(script_name_c,"_"," ");
       if (term == "png") set("title '"+script_name_c+"'");
     }
 

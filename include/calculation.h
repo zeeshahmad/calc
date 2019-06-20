@@ -10,9 +10,9 @@
 #include <iostream>
 #include <iomanip>
 
-#include "calc/complex_double.h"
-#include "calc/plot_script.h"
-#include "calc/util.h"
+#include "complex_double.h"
+#include "plot_script.h"
+#include "calc_util.h"
 
 
 using namespace std;
@@ -77,8 +77,8 @@ public:
 
   Calculation(string name):name(name)
   {
-    util::mkdir(calc_path);
-    util::mkdir(calc_path+name+"/");
+    calc_util::mkdir(calc_path);
+    calc_util::mkdir(calc_path+name+"/");
   }
 
   void work(VariableList variables, vector<double> (*iteration_func)(),
@@ -181,13 +181,13 @@ private:
 
   void parse_header_names(string & data) {
     for (int j = 0; j < headers.size(); j++) {
-      util::findAndReplaceAll(data, "<"+headers.at(j)+">",
+      calc_util::findAndReplaceAll(data, "<"+headers.at(j)+">",
         to_string(find_header_index_by_name(headers.at(j))+1) );
     }
   }
 
   void parse_data_file_path(string & data) {
-    util::findAndReplaceAll(data,"<data_file_path>",name+".data");
+    calc_util::findAndReplaceAll(data,"<data_file_path>",name+".data");
   }
 
 

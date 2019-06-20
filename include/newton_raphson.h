@@ -1,7 +1,7 @@
 #ifndef NEWTON_RAPHSON_H
 #define NEWTON_RAPHSON_H
 
-#include "calc/complex_double.h"
+#include "complex_double.h"
 #include <vector>
 #include <iostream>
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace util
+namespace calc_util
 {
     vector<string> splitString(string str, string del) {
         vector<string> results = vector<string>();
