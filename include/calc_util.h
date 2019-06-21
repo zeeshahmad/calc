@@ -6,12 +6,10 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 namespace calc_util
 {
-    vector<string> splitString(string str, string del) {
-        vector<string> results = vector<string>();
+    std::vector<std::string> splitString(std::string str, std::string del) {
+        std::vector<std::string> results = std::vector<std::string>();
         int pos;
         while ( pos != str.npos ) {
             pos = str.find(del);
@@ -27,17 +25,17 @@ namespace calc_util
     }
 
 
-    void findAndReplaceAll(string & data, string toSearch, string replaceStr) {
+    void findAndReplaceAll(std::string & data, std::string toSearch, std::string replaceStr) {
       size_t pos = data.find(toSearch);
-      while( pos != string::npos)	{
+      while( pos != std::string::npos)	{
         data.replace(pos, toSearch.size(), replaceStr);
         pos =data.find(toSearch, pos + replaceStr.size());
       }
     }
 
-    void mkdir(string dirpath) {
-      if (-1 == system(("mkdir -p "+dirpath).c_str()) ) {
-        cout << "some error making dir: " << dirpath << endl;
+    void mkdir(std::string dirpath) {
+      if (-1 == std::system(("mkdir -p "+dirpath).c_str()) ) {
+        std::cout << "some error making dir: " << dirpath << std::endl;
       }
     }
 

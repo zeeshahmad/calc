@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-const vector<string> gnuplot_styles = { "","#begin styles",
+const std::vector<std::string> gnuplot_styles = { "","#begin styles",
 "c_blue = '#0088aa'",
 "c_dgreen = '#325a0a'",
 "c_orange = '#ff6600'",

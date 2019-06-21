@@ -5,8 +5,6 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 class NewtonRaphson {
 public:
   struct result {
@@ -16,7 +14,7 @@ public:
     int state;
   } last_result;
 
-  const vector<string> state_labels = {"nothing happened", "success", "iterations stopped" };
+  const std::vector<std::string> state_labels = {"nothing happened", "success", "iterations stopped" };
 
   static int default_num_iters;
   static int iters_excused;
@@ -35,18 +33,18 @@ public:
 protected:
 private:
 
-  void print_warn(string warn) { if(print_warnings) cout << "nr: warning: " << warn << endl; }
-  void stop_warn(result *r, string message) {
+  void print_warn(std::string warn) { if(print_warnings) std::cout << "nr: warning: " << warn << std::endl; }
+  void stop_warn(result *r, std::string message) {
     r->state = 2;
-    print_warn(message+" ... iterations ("+to_string(r->iter_count)+") stopped");
+    print_warn(message+" ... iterations ("+std::to_string(r->iter_count)+") stopped");
   }
 
   cd improve_result(cd(*f)(cd), cd given_z, int iterations_left, result* r) {
     cd df = num_diff(f, given_z);
     cd improved_z = given_z - f(given_z)/df;
 
-    /*cout << "given_z:" << given_z.string_form() << endl;
-    cout << "improved_z:" << improved_z.string_form() << endl;*/
+    /*std::cout << "given_z:" << given_z.string_form() << std::endl;
+    std::cout << "improved_z:" << improved_z.string_form() << std::endl;*/
 
 
     r->value = improved_z;
@@ -58,14 +56,14 @@ private:
     if (r->iter_count > iters_excused && iters_excused > -1) {
 
       if (r->modf > modf_tol) {
-        stop_warn(r, "|f("+improved_z.string_form()+")|="+to_string(r->modf)+", exceeded tolerance:"+to_string(modf_tol));
+        stop_warn(r, "|f("+improved_z.stringify()+")|="+std::to_string(r->modf)+", exceeded tolerance:"+std::to_string(modf_tol));
         return improved_z;
       }
       if (abs(df)==0.0) {
-        stop_warn(r, "|df("+improved_z.string_form()+")| is zero, nr will diverge!"+df.string_form());
+        stop_warn(r, "|df("+improved_z.stringify()+")| is zero, nr will diverge!"+df.stringify());
         return improved_z;
       }
-      if (isnan(abs(improved_z.real()))) {
+      if (std::isnan(abs(improved_z.real()))) {
         stop_warn(r, "nan value reached!");
         return improved_z;
       }

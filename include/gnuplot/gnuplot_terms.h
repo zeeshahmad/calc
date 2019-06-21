@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-const vector<string> gnuplot_terms = { "","#begin term settings",
+const std::vector<std::string> gnuplot_terms = { "","#begin term settings",
 "if (chosen_term eq 'png') {",
 "  set term png enhanced size 1200,1200 font 'Ubuntu,28' lw 2",
 "  output_ext = '.png'",
