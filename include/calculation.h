@@ -21,7 +21,7 @@ public:
   Parameter(cd value, std::string name_label, std::string units_label)
   :cd(value), units_label(units_label), name_label(name_label)
   {  }
-  Parameter& operator=(double & x) {
+  Parameter& operator=(double  x) {
     cd::operator=(x);
     return *this;
   }
@@ -47,6 +47,10 @@ public:
   Variable(cd ls_from, cd ls_to, int ls_real_points, std::string name_label, std::string units_label)
     : Variable(ls_from, ls_to, ls_real_points, 1, units_label, name_label)
     {  }
+  Variable& operator=(double  x) {
+    cd::operator=(x);
+    return *this;
+  }
 
   std::string stringify(bool include_name = true, bool include_units = true) {
     return Parameter::stringify(include_name, include_units) + " ["+points.front().stringify()+"->"+points.back().stringify()+"]";
