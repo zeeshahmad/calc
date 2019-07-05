@@ -14,7 +14,7 @@ typedef std::vector<cd> cd_vector;
 class cd: public cd_raw {
 public:
   using cd_raw::cd_raw;
-
+  cd():cd_raw(0.0) { }
   //cd(int i):cd_raw((double) i, 0.0) { }
 
   cd(cd_raw z):cd_raw(z) { }
