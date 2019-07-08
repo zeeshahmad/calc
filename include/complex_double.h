@@ -28,6 +28,7 @@ public:
   }
 
   static cd_vector linspace(cd start, cd end, int num_real, int num_imag = 1);
+  static cd_vector logspace(cd start, cd end, int num_real, int num_imag = 1);
 
 };
 
@@ -66,6 +67,21 @@ cd_vector cd::linspace(cd start, cd end, int num_real, int num_imag)
     }
   }
   return linspaced;
+}
+
+cd_vector cd::logspace(cd start, cd end, int num_real, int num_imag)
+{
+  cd_vector logspaced;
+  cd_vector real_pows = linspace(log10(start.real()), log10(end.real()), num_real);
+  cd_vector imag_pows = linspace(log10(start.imag()), log10(end.imag()), num_imag);
+  for (int r = 0; r < num_real; r++)
+  {
+    for (int i = 0; i < num_imag; i++)
+    {
+      logspaced.push_back(pow(10.,real_pows.at(r))+I*pow(10., imag_pows.at(i)) );
+    }
+  }
+  return logspaced;
 }
 
 #endif
