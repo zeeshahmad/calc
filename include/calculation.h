@@ -39,14 +39,14 @@ typedef std::vector<Parameter*> ParameterList;
 class Variable: public Parameter {
 public:
   cd_vector points;
-  Variable(cd ls_from, cd ls_to, int ls_real_points, int ls_imag_points, std::string name_label, std::string units_label)
-    : Parameter(ls_from, units_label, name_label)
+  Variable(/*cd ls_from, cd ls_to, int ls_real_points, int ls_imag_points,*/ std::string name_label, std::string units_label)
+    : Parameter(0, units_label, name_label)
     {
-      points = cd::linspace(ls_from, ls_to, ls_real_points, ls_imag_points);
+      //points = cd::linspace(ls_from, ls_to, ls_real_points, ls_imag_points);
     }
-  Variable(cd ls_from, cd ls_to, int ls_real_points, std::string name_label, std::string units_label)
+  /*Variable(cd ls_from, cd ls_to, int ls_real_points, std::string name_label, std::string units_label)
     : Variable(ls_from, ls_to, ls_real_points, 1, units_label, name_label)
-    {  }
+    {  }*/
   Variable& operator=(double  x) {
     cd::operator=(x);
     return *this;
