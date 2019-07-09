@@ -8,11 +8,10 @@
 #include <iomanip>
 #include <vector>
 
-#include "gnuplot/gnuplot.h"
-#include "gnuplot/gnuplot_styles.h"
-#include "gnuplot/gnuplot_terms.h"
-#include "calc_util.h"
-#include "complex_double.h"
+#include "gnuplot/gnuplot.hpp"
+#include "gnuplot/gnuplot_styles.hpp"
+#include "gnuplot/gnuplot_terms.hpp"
+#include "calc_util.hpp"
 
 class PlotScript {
   public:

@@ -1,14 +1,14 @@
 #ifndef NEWTON_RAPHSON_H
 #define NEWTON_RAPHSON_H
 
-#include "complex_double.h"
 #include <vector>
 #include <iostream>
+#include <complex>
 
 class NewtonRaphson {
 public:
   struct result {
-    cd value;
+    std::complex<double> value;
     int iter_count;
     double modf;
     int state;
@@ -24,7 +24,7 @@ public:
 
   NewtonRaphson() { }
 
-  cd improve(cd(*f)(cd), cd guess_z, int num_iterations = -1) {
+  std::complex<double> improve(std::complex<double>(*f)(std::complex<double>), std::complex<double> guess_z, int num_iterations = -1) {
     if (num_iterations == -1) num_iterations = default_num_iters;
     last_result.iter_count = 0; last_result.state = 0;
     return improve_result(f, guess_z, num_iterations, &last_result);
@@ -39,13 +39,9 @@ private:
     print_warn(message+" ... iterations ("+std::to_string(r->iter_count)+") stopped");
   }
 
-  cd improve_result(cd(*f)(cd), cd given_z, int iterations_left, result* r) {
-    cd df = num_diff(f, given_z);
-    cd improved_z = given_z - f(given_z)/df;
-
-    /*std::cout << "given_z:" << given_z.string_form() << std::endl;
-    std::cout << "improved_z:" << improved_z.string_form() << std::endl;*/
-
+  std::complex<double> improve_result(std::complex<double>(*f)(std::complex<double>), std::complex<double> given_z, int iterations_left, result* r) {
+    std::complex<double> df = num_diff(f, given_z);
+    std::complex<double> improved_z = given_z - f(given_z)/df;
 
     r->value = improved_z;
     r->modf = abs(f(improved_z));
@@ -56,11 +52,11 @@ private:
     if (r->iter_count > iters_excused && iters_excused > -1) {
 
       if (r->modf > modf_tol) {
-        stop_warn(r, "|f("+improved_z.stringify()+")|="+std::to_string(r->modf)+", exceeded tolerance:"+std::to_string(modf_tol));
+        stop_warn(r, "|f("+to_string(improved_z)+")|="+std::to_string(r->modf)+", exceeded tolerance:"+std::to_string(modf_tol));
         return improved_z;
       }
       if (abs(df)==0.0) {
-        stop_warn(r, "|df("+improved_z.stringify()+")| is zero, nr will diverge!"+df.stringify());
+        stop_warn(r, "|df("+to_string(improved_z)+")| is zero, nr will diverge!"+to_string(df));
         return improved_z;
       }
       if (std::isnan(abs(improved_z.real()))) {
@@ -69,8 +65,6 @@ private:
       }
 
     }
-
-
 
     if (iterations_left > 0) {
       improved_z = improve_result(f, improved_z, iterations_left-1, r);
@@ -81,16 +75,14 @@ private:
     return improved_z;
   }
 
-  cd num_diff(cd(*f)(cd), cd z) {
-    cd f_up = f(z+num_diff_step/2.);
-    cd f_down = f(z-num_diff_step/2.);
+  std::complex<double> num_diff(std::complex<double>(*f)(std::complex<double>), std::complex<double> z) {
     return (f(z+num_diff_step/2.) - f(z-num_diff_step/2.))/num_diff_step;
   }
 };
 
 int NewtonRaphson::default_num_iters = 80;
 bool NewtonRaphson::print_warnings = false;
-int NewtonRaphson::iters_excused = 10;
+int NewtonRaphson::iters_excused = 5;
 double NewtonRaphson::num_diff_step = 1.0e-6;
 
 
