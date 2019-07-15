@@ -87,7 +87,7 @@ class PlotScript {
       }
       r("if (show_parameters == 1) {");
       r("set bmargin "+std::to_string(bmargin));
-      set_label(final_text.str(), "graph 0,graph 0",-1, "tc rgb c_light_gray");
+      set_label(final_text.str(), "graph 0,graph 0",-1, "tc rgb c_dark_gray");
       r("}");
     }
 

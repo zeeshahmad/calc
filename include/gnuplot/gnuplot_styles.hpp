@@ -11,6 +11,7 @@ const std::vector<std::string> gnuplot_styles = { "","#begin styles",
 "c_gold = '#bf9800'",
 "c_maroon = '#8d2727'",
 "c_light_gray = '#a3a3a3'",
+"c_dark_gray = '#424242'",
 "c_pink = '#ff0066'",
 //# first 9 styles for 'using lines'
 "set style line 1 lw line_lw lc rgb c_blue",
