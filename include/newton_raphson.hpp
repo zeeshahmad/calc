@@ -9,6 +9,11 @@
 #include <calc_util.hpp>
 #include <plot_script.hpp>
 
+#define NR_NULL 0
+#define NR_SUCCESS 1
+#define NR_INACCURATE 2
+#define NR_NAUGHTY 3
+
 class NewtonRaphson {
 public:
 
@@ -18,6 +23,7 @@ public:
   static bool record_history;
 
   struct result {
+    int status;
     std::complex<double> z;
     int iterations;
     std::vector<double> history_mod_f;
@@ -34,7 +40,7 @@ public:
     std::complex<double> f;
     std::complex<double> df;
     
-    result r;
+    result r; r.status = NR_NULL;
     int i; 
     for (i = 0; i < iterations; i++) {
       f = f_zero(z); 
@@ -45,13 +51,18 @@ public:
         r.history_mod_df.push_back(abs(df));
       }
 
-      if (abs(f/df) < epsabs + epsrel*abs(z)) break;
+      if (abs(f/df) < epsabs + epsrel*abs(z)) {
+        r.status = NR_SUCCESS;  
+        break;
+      }
       if (abs(df) == 0.0) {
         print_warn("df is zero at "+to_string(z)+ " at iteration "+to_string(i));
+        r.status = NR_NAUGHTY;
         break;
       }
       if (!std::isfinite(abs(f))) {
         print_warn("f is badly behaved (Inf or NaN) at "+to_string(z) + " at iteration "+to_string(i));
+        r.status = NR_NAUGHTY;
         break;
       }
 

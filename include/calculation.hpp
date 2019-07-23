@@ -89,30 +89,26 @@ public:
     calc_util::mkdir(calc_path+name+"/");
   }
 
-  void work(VariableList variables, std::vector<double> (*iteration_func)(),
-      bool export_live = true)
+  void work(VariableList variables, std::vector<double> (*iteration_func)())
   {
     if (nowork) {
       print_log("skip work.");
     } else {
       print_log("begin work");
       list_parameters();
-      std::ofstream outfile; if (export_live) {
-        outfile.open(get_data_filepath());
-        outfile << concat_strings(headers, EXPORT_DELIMITER) << "\n";
-      }
-      iterate_recurse(iteration_func, variables, &outfile, export_live);
+      std::ofstream outfile; 
+      outfile.open(get_data_filepath());
+      outfile << concat_strings(headers, EXPORT_DELIMITER) << "\n";
+      iterate_recurse(iteration_func, variables, &outfile);
 
-      if (export_live) {
-        outfile.flush();
-        outfile.close();
-      }
+      outfile.flush();
+      outfile.close();
       print_log("end work");
     }
   }
 
 
-  void plot(PlotCommands (*plot_coms)(Calculation*), std::string term = "png",
+  void plot(PlotCommands (*plot_coms)(), std::string term = "png",
    bool export_script= false, std::string export_name = "") {
     bool silent_state = PlotScript::silent; PlotScript::silent = true;
     ps = new PlotScript(name, term);
@@ -124,7 +120,7 @@ public:
       ps->append_parameter_info(parameters.at(i)->stringify(true));
     ps->set_parameter_info();
     if (plot_coms != NULL) {
-      PlotCommands comms = plot_coms(this);
+      PlotCommands comms = plot_coms();
       for (int i = 0; i<comms.size(); i++) {
         parse_header_names(comms.at(i));
         parse_data_file_path(comms.at(i));
@@ -138,18 +134,6 @@ public:
     delete(ps);
   }
 
-  void export_data() {
-    std::ofstream outfile(get_data_filepath());
-    outfile << concat_strings(headers, EXPORT_DELIMITER) << "\n";
-    for (int i = 0; i < data.size(); i++) {
-      for (int j = 0; j < data.at(i).size(); j++) {
-        outfile << data.at(i).at(j) << EXPORT_DELIMITER;
-      }
-      outfile << "\n";
-    }
-    outfile.flush();
-    outfile.close();
-  }
 
   std::string get_data_filepath() { return calc_path+name+"/"+name+".data"; }
 
@@ -212,9 +196,16 @@ private:
     if (flush) std::cout.flush();
   }
 
+  /*
+  bool data_contains(std::vector<double> data_row) {
+    for (int i=0; i<data.size(); i++) if (data.at(i)==data_row) return true;
+    return false;
+  }
+*/
+
   void iterate_recurse(std::vector<double> (*f)(),
     VariableList &variables, std::ofstream* file_handle,
-    bool export_live, int depth=0)
+    int depth=0)
   {
     if (depth < variables.size())
     {
@@ -222,7 +213,7 @@ private:
       {
         variables.at(depth)->real(variables.at(depth)->points.at(i).real());
         variables.at(depth)->imag(variables.at(depth)->points.at(i).imag());
-        iterate_recurse(f, variables, file_handle, export_live, depth+1);
+        iterate_recurse(f, variables, file_handle, depth+1);
       }
     }
     else
@@ -230,10 +221,9 @@ private:
 
       RowResult results_row = f();
       data.push_back(results_row);
-      if (export_live) {
-        for (int i = 0; i < results_row.size(); i++) *file_handle << results_row.at(i) << EXPORT_DELIMITER;
-        if (results_row.size()>0) *file_handle << "\n";
-      }
+      //export data
+      for (int i = 0; i < results_row.size(); i++) *file_handle << results_row.at(i) << EXPORT_DELIMITER;
+      if (results_row.size()>0) *file_handle << "\n";
     }
   }
 
