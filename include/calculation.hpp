@@ -51,7 +51,7 @@ class Variable: public Parameter {
 public:
   std::vector<cd> points;
   Variable(std::string name_label, std::string units_label)
-    : Parameter(0, units_label, name_label)
+    : Parameter(0, name_label, units_label)
     {
 
     }
