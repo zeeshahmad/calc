@@ -60,6 +60,12 @@ public:
     cd::operator=(x);
     return *this;
   }
+  
+  Variable& operator=(cd  x) {
+    cd::operator=(x);
+    return *this;
+  }
+
 
   std::string stringify(bool include_name = true, bool include_units = true) {
     return Parameter::stringify(include_name, include_units) + " ["+to_string(points.front())+"->"+to_string(points.back())+"]";
